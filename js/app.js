@@ -24,6 +24,7 @@
     today: document.getElementById("today"),
     todayList: document.getElementById("today-list"),
     thisWeek: document.getElementById("this-week"),
+    weekRange: document.getElementById("week-range"),
     weekGrid: document.getElementById("week-grid"),
   };
 
@@ -148,10 +149,14 @@
     const start = parseTimeToMinutes(session.start);
     const end = parseTimeToMinutes(session.end);
     let relative = "";
+    let badge = "";
     if (status === "running") {
       relative = `<p class="relative">Ends in ${formatRelative(end - nowMinutes)}</p>`;
     } else if (status === "upcoming") {
       relative = `<p class="relative">Starts in ${formatRelative(start - nowMinutes)}</p>`;
+    } else if (status === "finished") {
+      relative = `<p class="relative ended-copy">This office hour has ended</p>`;
+      badge = `<span class="status-badge ended">Ended</span>`;
     }
 
     const classes = ["card"];
@@ -165,6 +170,7 @@
             <p class="ta">${escapeHtml(session.ta)}</p>
             <p class="time">${formatTimeRange(session.start, session.end)}</p>
           </div>
+          ${badge}
         </div>
         <div class="meta">${locationMarkup(session, status)}</div>
         ${relative}
@@ -172,17 +178,59 @@
     `;
   }
 
+  function weekDates(parts) {
+    const todayIndex = DAYS.indexOf(parts.weekday);
+    const todayUtc = Date.UTC(parts.year, parts.month - 1, parts.day);
+    return DAYS.map((name, index) => {
+      const date = new Date(todayUtc + (index - todayIndex) * 86400000);
+      return {
+        name,
+        date: date.getUTCDate(),
+        year: date.getUTCFullYear(),
+        monthShort: new Intl.DateTimeFormat("en-US", {
+          month: "short",
+          timeZone: "UTC",
+        }).format(date),
+      };
+    });
+  }
+
+  function formatWeekRange(days) {
+    const first = days[0];
+    const last = days[6];
+    if (first.monthShort === last.monthShort && first.year === last.year) {
+      return `${first.monthShort} ${first.date}–${last.date}, ${first.year}`;
+    }
+    if (first.year === last.year) {
+      return `${first.monthShort} ${first.date} – ${last.monthShort} ${last.date}, ${last.year}`;
+    }
+    return `${first.monthShort} ${first.date}, ${first.year} – ${last.monthShort} ${last.date}, ${last.year}`;
+  }
+
   function weekSessionHtml(session) {
+    const classes = ["cal-event"];
+    if (session.type === "online") classes.push("online");
+    if (session.status === "running") classes.push("running");
+    if (session.status === "finished") classes.push("finished");
+
     const typeLabel =
       session.type === "online"
-        ? `Online · ${escapeHtml(session.location || "Zoom")}`
-        : `In person · ${escapeHtml(session.location)}`;
+        ? escapeHtml(session.location || "Zoom")
+        : escapeHtml(session.location);
+
+    let statusLabel = "";
+    if (session.status === "finished") {
+      statusLabel = `<span class="cal-status">Ended</span>`;
+    } else if (session.status === "running") {
+      statusLabel = `<span class="cal-status now">Now</span>`;
+    }
+
     return `
-      <div class="week-session">
-        <p class="ta">${escapeHtml(session.ta)}</p>
-        <p class="time">${formatTimeRange(session.start, session.end)}</p>
-        <p class="time">${typeLabel}</p>
-      </div>
+      <article class="${classes.join(" ")}">
+        <p class="cal-time"><span>${formatTimeRange(session.start, session.end)}</span>${statusLabel}</p>
+        <p class="cal-ta">${escapeHtml(session.ta)}</p>
+        <p class="cal-loc">${typeLabel}</p>
+      </article>
     `;
   }
 
@@ -253,21 +301,28 @@
       weekdaySessions[day].sort((a, b) => a.startMin - b.startMin);
     }
 
+    const days = weekDates(parts);
     els.thisWeek.hidden = false;
-    els.weekGrid.innerHTML = DAYS.map((day) => {
-      const items = weekdaySessions[day];
-      const weekend = day === "Saturday" || day === "Sunday" ? " weekend" : "";
-      const todayClass = day === parts.weekday ? " today" : "";
-      const body = items.length
-        ? items.map(weekSessionHtml).join("")
-        : `<p class="empty">None</p>`;
-      return `
-        <div class="day-col${todayClass}${weekend}">
-          <p class="day-name">${day}</p>
-          ${body}
+    els.weekRange.textContent = formatWeekRange(days);
+    els.weekGrid.innerHTML = days
+      .map((day) => {
+        const items = weekdaySessions[day.name];
+        const weekend = day.name === "Saturday" || day.name === "Sunday" ? " weekend" : "";
+        const todayClass = day.name === parts.weekday ? " today" : "";
+        const body = items.length
+          ? items.map(weekSessionHtml).join("")
+          : `<p class="cal-empty">No office hours</p>`;
+        return `
+        <div class="cal-day${todayClass}${weekend}" role="gridcell">
+          <div class="cal-head">
+            <p class="cal-dow">${day.name.slice(0, 3)}</p>
+            <p class="cal-date">${day.date}</p>
+          </div>
+          <div class="cal-events">${body}</div>
         </div>
       `;
-    }).join("");
+      })
+      .join("");
   }
 
   function tick() {
