@@ -134,6 +134,58 @@ main {
   color: var(--danger);
 }
 
+.filters {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.9rem;
+  margin: 0 -1.15rem;
+  padding: 0.75rem 1.15rem 0.7rem;
+  background: var(--cream);
+  border-bottom: 1px solid var(--line);
+}
+
+.filter-label {
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.filter-btn {
+  font: inherit;
+  font-weight: 650;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.42rem 0.9rem;
+}
+
+.filter-btn:hover,
+.filter-btn:focus-visible {
+  border-color: var(--gold);
+}
+
+.filter-btn.is-active {
+  background: var(--black);
+  border-color: var(--black);
+  color: #fff;
+}
+
 .section {
   margin-top: 1.6rem;
 }
@@ -485,6 +537,13 @@ main {
   .site-header,
   main,
   .site-footer {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .filters {
+    margin-left: -1.75rem;
+    margin-right: -1.75rem;
     padding-left: 1.75rem;
     padding-right: 1.75rem;
   }

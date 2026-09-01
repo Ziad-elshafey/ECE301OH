@@ -26,10 +26,18 @@
     thisWeek: document.getElementById("this-week"),
     weekRange: document.getElementById("week-range"),
     weekGrid: document.getElementById("week-grid"),
+    filters: document.getElementById("filters"),
   };
 
   let schedule = null;
   let usingOverride = false;
+  let typeFilter = "all";
+
+  const FILTER_LABELS = {
+    all: "office hours",
+    online: "online office hours",
+    "in-person": "in-person office hours",
+  };
 
   function parseTimeToMinutes(hhmm) {
     const [hours, minutes] = hhmm.split(":").map(Number);
@@ -249,18 +257,47 @@
     list.innerHTML = html || `<p class="empty">${emptyText}</p>`;
   }
 
+  function matchesFilter(session) {
+    return typeFilter === "all" || session.type === typeFilter;
+  }
+
+  function kindLabel() {
+    return FILTER_LABELS[typeFilter] || FILTER_LABELS.all;
+  }
+
+  function syncFilterButtons() {
+    document.querySelectorAll(".filter-btn").forEach((button) => {
+      const active = button.dataset.type === typeFilter;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
+  function writeTypeParam() {
+    const url = new URL(window.location.href);
+    if (typeFilter === "all") {
+      url.searchParams.delete("type");
+    } else {
+      url.searchParams.set("type", typeFilter);
+    }
+    window.history.replaceState({}, "", url);
+  }
+
   function render(now) {
     const timeZone = schedule.timezone || "America/Indiana/Indianapolis";
     const parts = zoneParts(now, timeZone);
     const nowMinutes = parts.hour * 60 + parts.minute + parts.second / 60;
 
     renderClock(parts);
+    syncFilterButtons();
 
-    const sessions = schedule.sessions.map((session) => ({
-      ...session,
-      status: classify(session, parts.weekday, nowMinutes),
-      startMin: parseTimeToMinutes(session.start),
-    }));
+    const sessions = schedule.sessions
+      .map((session) => ({
+        ...session,
+        status: classify(session, parts.weekday, nowMinutes),
+        startMin: parseTimeToMinutes(session.start),
+      }))
+      .filter(matchesFilter);
 
     const running = sessions
       .filter((session) => session.status === "running")
@@ -276,21 +313,21 @@
       els.happeningNow,
       els.happeningNowList,
       running.map((session) => cardHtml(session, "running", nowMinutes, { featured: true })).join(""),
-      "No office hours right now."
+      `No ${kindLabel()} right now.`
     );
 
     fillList(
       els.comingUp,
       els.comingUpList,
       upcoming.map((session) => cardHtml(session, "upcoming", nowMinutes)).join(""),
-      "No more office hours later today."
+      `No more ${kindLabel()} later today.`
     );
 
     fillList(
       els.today,
       els.todayList,
       today.map((session) => cardHtml(session, session.status, nowMinutes)).join(""),
-      "No office hours scheduled today."
+      `No ${kindLabel()} scheduled today.`
     );
 
     const weekdaySessions = Object.fromEntries(DAYS.map((day) => [day, []]));
@@ -311,7 +348,7 @@
         const todayClass = day.name === parts.weekday ? " today" : "";
         const body = items.length
           ? items.map(weekSessionHtml).join("")
-          : `<p class="cal-empty">No office hours</p>`;
+          : `<p class="cal-empty">No ${kindLabel()}</p>`;
         return `
         <div class="cal-day${todayClass}${weekend}" role="gridcell">
           <div class="cal-head">
@@ -342,6 +379,21 @@
       els.courseTerm.textContent = schedule.course.term || "";
       document.title = `${schedule.course.code} Office Hours`;
       els.loadStatus.hidden = true;
+      els.filters.hidden = false;
+
+      const typeParam = new URLSearchParams(window.location.search).get("type");
+      if (typeParam === "online" || typeParam === "in-person") {
+        typeFilter = typeParam;
+      }
+
+      els.filters.addEventListener("click", (event) => {
+        const button = event.target.closest(".filter-btn");
+        if (!button) return;
+        typeFilter = button.dataset.type;
+        writeTypeParam();
+        tick();
+      });
+
       tick();
       window.setInterval(tick, REFRESH_MS);
     } catch (error) {
