@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Live ECE 301 office hours for Purdue Signals and Systems. West Lafayette time."
+    />
+    <title>ECE 301 Office Hours</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="gold-bar" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <p class="kicker">Purdue University</p>
+        <h1>
+          <span id="course-code">ECE 301</span>
+          <span class="title-rest" id="course-name">Signals and Systems</span>
+        </h1>
+        <p class="subtitle">Office Hours</p>
+        <p class="term" id="course-term"></p>
+
+        <div class="clock-block">
+          <p class="clock-label">West Lafayette time</p>
+          <p class="clock" id="clock">Loading…</p>
+          <p class="clock-note" id="clock-note" hidden>Showing a preview time from the URL</p>
+        </div>
+      </div>
+    </header>
+
+    <main id="app">
+      <p class="status-msg" id="load-status">Loading office hours…</p>
+
+      <section class="section section-now" id="happening-now" hidden>
+        <h2>Happening now</h2>
+        <div class="card-list" id="happening-now-list"></div>
+      </section>
+
+      <section class="section" id="coming-up" hidden>
+        <h2>Coming up today</h2>
+        <div class="card-list" id="coming-up-list"></div>
+      </section>
+
+      <section class="section" id="today" hidden>
+        <h2>Today</h2>
+        <div class="card-list" id="today-list"></div>
+      </section>
+
+      <section class="section section-week" id="this-week" hidden>
+        <h2>This week</h2>
+        <div class="week-grid" id="week-grid"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Times are shown in West Lafayette
+        (<span class="mono">America/Indiana/Indianapolis</span>).
+      </p>
+      <p>Replace placeholder TAs in <span class="mono">data/office-hours.json</span>.</p>
+    </footer>
+
+    <noscript>
+      <p class="noscript">JavaScript is required to show live office hours.</p>
+    </noscript>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>
