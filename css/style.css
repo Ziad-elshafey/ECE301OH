@@ -325,6 +325,102 @@ main {
   background: #2a2a2a;
 }
 
+.host-list {
+  list-style: none;
+  margin: 0.7rem 0 0;
+  padding: 0;
+}
+
+.host-list.in-person {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.host-list.in-person .host-row {
+  margin: 0;
+}
+
+.host-list.in-person .host-name {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.18rem 0.6rem;
+  background: var(--gold-soft);
+  color: #5d4708;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.host-list.online {
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fbfaf6;
+}
+
+.host-list.online .host-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
+  margin: 0;
+  padding: 0.45rem 0.65rem;
+  border-top: 1px solid var(--line);
+}
+
+.host-list.online .host-row:first-child {
+  border-top: 0;
+}
+
+.host-list.online .host-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.host-list.online .zoom-link {
+  margin-top: 0;
+  padding: 0.28rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 650;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.host-list.online .zoom-link:hover,
+.host-list.online .zoom-link:focus-visible {
+  background: var(--black);
+  color: #fff;
+  border-color: var(--black);
+}
+
+.cal-hosts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.22rem;
+  margin-top: 0.35rem;
+}
+
+.cal-host {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 0.08rem 0.38rem;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.cal-event.online .cal-host {
+  background: rgba(255, 255, 255, 0.55);
+}
+
 .empty {
   margin: 0;
   color: var(--muted);

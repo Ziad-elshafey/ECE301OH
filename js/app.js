@@ -130,8 +130,29 @@
     return "finished";
   }
 
-  function showZoom(session, status) {
-    return session.type === "online" && session.link && (status === "running" || status === "upcoming");
+  function hasHosts(session) {
+    return Array.isArray(session.hosts);
+  }
+
+  function canJoin(status) {
+    return status === "running" || status === "upcoming";
+  }
+
+  function joinPlatform(source) {
+    const platform = String(source.platform || "").toLowerCase();
+    if (platform === "teams") return "teams";
+    const location = String(source.location || "").toLowerCase();
+    if (location === "teams") return "teams";
+    return "zoom";
+  }
+
+  function joinLabel(platform) {
+    return platform === "teams" ? "Join Teams" : "Join Zoom";
+  }
+
+  function joinLinkHtml(href, platform) {
+    if (!href) return "";
+    return `<a class="zoom-link" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${joinLabel(platform)}</a>`;
   }
 
   function escapeHtml(value) {
@@ -144,13 +165,30 @@
 
   function locationMarkup(session, status) {
     if (session.type === "online") {
-      const pill = `<span class="pill online">Online · ${escapeHtml(session.location || "Zoom")}</span>`;
-      const link = showZoom(session, status)
-        ? `<a class="zoom-link" href="${escapeHtml(session.link)}" target="_blank" rel="noopener noreferrer">Join Zoom</a>`
-        : "";
+      const location = session.location || "Zoom";
+      const pillText = location.toLowerCase() === "online" ? "Online" : `Online · ${location}`;
+      const pill = `<span class="pill online">${escapeHtml(pillText)}</span>`;
+      if (hasHosts(session)) return pill;
+      const link = canJoin(status) && session.link ? joinLinkHtml(session.link, joinPlatform(session)) : "";
       return `${pill}${link}`;
     }
     return `<span class="pill">In person · ${escapeHtml(session.location)}</span>`;
+  }
+
+  function hostsMarkup(session, status) {
+    if (!hasHosts(session) || !session.hosts.length) return "";
+    const listClass = session.type === "online" ? "host-list online" : "host-list in-person";
+    const items = session.hosts
+      .map((host) => {
+        const name = `<span class="host-name">${escapeHtml(host.ta)}</span>`;
+        const link =
+          session.type === "online" && canJoin(status) && host.link
+            ? joinLinkHtml(host.link, joinPlatform(host))
+            : "";
+        return `<li class="host-row">${name}${link}</li>`;
+      })
+      .join("");
+    return `<ul class="${listClass}">${items}</ul>`;
   }
 
   function cardHtml(session, status, nowMinutes, { featured = false } = {}) {
@@ -181,6 +219,7 @@
           ${badge}
         </div>
         <div class="meta">${locationMarkup(session, status)}</div>
+        ${hostsMarkup(session, status)}
         ${relative}
       </article>
     `;
@@ -233,11 +272,20 @@
       statusLabel = `<span class="cal-status now">Now</span>`;
     }
 
+    let hostsLine = "";
+    if (hasHosts(session) && session.hosts.length) {
+      const chips = session.hosts
+        .map((host) => `<span class="cal-host">${escapeHtml(host.ta)}</span>`)
+        .join("");
+      hostsLine = `<div class="cal-hosts">${chips}</div>`;
+    }
+
     return `
       <article class="${classes.join(" ")}">
         <p class="cal-time"><span>${formatTimeRange(session.start, session.end)}</span>${statusLabel}</p>
         <p class="cal-ta">${escapeHtml(session.ta)}</p>
         <p class="cal-loc">${typeLabel}</p>
+        ${hostsLine}
       </article>
     `;
   }
@@ -250,6 +298,32 @@
     }).format(dummy);
     els.clock.textContent = `${parts.weekday} · ${time}`;
     els.clockNote.hidden = !usingOverride;
+  }
+
+  function expandSessions(sessions) {
+    const expanded = [];
+    for (const session of sessions) {
+      if (!("inPersonHosts" in session) && !("onlineHosts" in session)) {
+        expanded.push(session);
+        continue;
+      }
+      expanded.push({
+        ...session,
+        id: `${session.id}-in-person`,
+        type: "in-person",
+        hosts: session.inPersonHosts || [],
+      });
+      if ((session.onlineHosts || []).length) {
+        expanded.push({
+          ...session,
+          id: `${session.id}-online`,
+          type: "online",
+          location: "Online",
+          hosts: session.onlineHosts || [],
+        });
+      }
+    }
+    return expanded;
   }
 
   function fillList(section, list, html, emptyText) {
@@ -291,7 +365,7 @@
     renderClock(parts);
     syncFilterButtons();
 
-    const sessions = schedule.sessions
+    const sessions = expandSessions(schedule.sessions)
       .map((session) => ({
         ...session,
         status: classify(session, parts.weekday, nowMinutes),

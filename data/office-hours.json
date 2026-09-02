@@ -26,23 +26,30 @@
       "location": "BHEE 208"
     },
     {
-      "id": "group-oh-mon-morning-in-person",
-      "ta": "Group OH",
+      "id": "group-oh-mon-morning",
+      "ta": "Group Office Hours",
       "day": "Monday",
       "start": "10:30",
       "end": "12:00",
-      "type": "in-person",
-      "location": "HAMP 2102"
-    },
-    {
-      "id": "group-oh-mon-morning-online",
-      "ta": "Group OH",
-      "day": "Monday",
-      "start": "10:30",
-      "end": "12:00",
-      "type": "online",
-      "location": "Zoom",
-      "link": "https://purdue.zoom.us/j/REPLACE_ME"
+      "location": "HAMP 2102",
+      "inPersonHosts": [
+        { "ta": "Ray" },
+        { "ta": "Yusuf Adebakin" },
+        { "ta": "Preston Mo" },
+        { "ta": "Steven Yan" }
+      ],
+      "onlineHosts": [
+        {
+          "ta": "Zeyad Elshafey",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        },
+        {
+          "ta": "Tarek Salama",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        }
+      ]
     },
     {
       "id": "hussein-hamouda-mon",
@@ -75,25 +82,39 @@
       "link": "https://purdue.zoom.us/j/REPLACE_ME"
     },
     {
-      "id": "group-oh-mon-afternoon-in-person",
-      "ta": "Group OH",
+      "id": "group-oh-mon-afternoon",
+      "ta": "Group Office Hours",
       "day": "Monday",
       "start": "13:30",
       "end": "16:00",
-      "type": "in-person",
-      "location": "BRNG B291"
+      "location": "BRNG B291",
+      "inPersonHosts": [
+        { "ta": "pate2303" },
+        { "ta": "Qiming" }
+      ],
+      "onlineHosts": [
+        {
+          "ta": "Hussein Hamouda",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        },
+        {
+          "ta": "Mohamed Aboelyazed",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        },
+        {
+          "ta": "Tarek Salama",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        },
+        {
+          "ta": "Zeyad Elshafey",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        }
+      ]
     },
-    {
-      "id": "group-oh-mon-afternoon-online",
-      "ta": "Group OH",
-      "day": "Monday",
-      "start": "13:30",
-      "end": "16:00",
-      "type": "online",
-      "location": "Zoom",
-      "link": "https://purdue.zoom.us/j/REPLACE_ME"
-    },
-
     {
       "id": "preston-mo-tue",
       "ta": "Preston Mo",
@@ -104,23 +125,38 @@
       "location": "BHEE 208"
     },
     {
-      "id": "group-oh-tue-in-person",
-      "ta": "Group OH",
+      "id": "group-oh-tue",
+      "ta": "Group Office Hours",
       "day": "Tuesday",
       "start": "13:30",
       "end": "16:00",
-      "type": "in-person",
-      "location": "BRNG B291"
-    },
-    {
-      "id": "group-oh-tue-online",
-      "ta": "Group OH",
-      "day": "Tuesday",
-      "start": "13:30",
-      "end": "16:00",
-      "type": "online",
-      "location": "Zoom",
-      "link": "https://purdue.zoom.us/j/REPLACE_ME"
+      "location": "BRNG B291",
+      "inPersonHosts": [
+        { "ta": "Parker" },
+        { "ta": "Preston Mo" }
+      ],
+      "onlineHosts": [
+        {
+          "ta": "Mohamed Aboelyazed",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        },
+        {
+          "ta": "Tarek Salama",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        },
+        {
+          "ta": "Zeyad Elshafey",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        },
+        {
+          "ta": "Hussein Hamouda",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        }
+      ]
     },
     {
       "id": "mohamed-aboelyazed-tue",
@@ -132,7 +168,6 @@
       "location": "Zoom",
       "link": "https://purdue.zoom.us/j/REPLACE_ME"
     },
-
     {
       "id": "nishant-bonthala-wed",
       "ta": "Nishant Bonthala",
@@ -153,23 +188,30 @@
       "location": "MSEE 292"
     },
     {
-      "id": "group-oh-wed-morning-in-person",
-      "ta": "Group OH",
+      "id": "group-oh-wed-morning",
+      "ta": "Group Office Hours",
       "day": "Wednesday",
       "start": "10:30",
       "end": "12:00",
-      "type": "in-person",
-      "location": "HAMP 2102"
-    },
-    {
-      "id": "group-oh-wed-morning-online",
-      "ta": "Group OH",
-      "day": "Wednesday",
-      "start": "10:30",
-      "end": "12:00",
-      "type": "online",
-      "location": "Zoom",
-      "link": "https://purdue.zoom.us/j/REPLACE_ME"
+      "location": "HAMP 2102",
+      "inPersonHosts": [
+        { "ta": "Ray" },
+        { "ta": "David" },
+        { "ta": "Preston Mo" },
+        { "ta": "Steven Yan" }
+      ],
+      "onlineHosts": [
+        {
+          "ta": "Mohamed Aboelyazed",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        },
+        {
+          "ta": "Tarek Salama",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        }
+      ]
     },
     {
       "id": "hatim-bamoumen-wed",
@@ -181,23 +223,18 @@
       "location": "BHEE 208"
     },
     {
-      "id": "group-oh-wed-afternoon-in-person",
-      "ta": "Group OH",
+      "id": "group-oh-wed-afternoon",
+      "ta": "Group Office Hours",
       "day": "Wednesday",
-      "start": "13:30",
-      "end": "16:00",
-      "type": "in-person",
-      "location": "PHYS 338"
-    },
-    {
-      "id": "group-oh-wed-afternoon-online",
-      "ta": "Group OH",
-      "day": "Wednesday",
-      "start": "13:30",
-      "end": "16:00",
-      "type": "online",
-      "location": "Zoom",
-      "link": "https://purdue.zoom.us/j/REPLACE_ME"
+      "start": "12:30",
+      "end": "14:00",
+      "location": "PHYS 338",
+      "inPersonHosts": [
+        { "ta": "David" },
+        { "ta": "Marie" },
+        { "ta": "pate2303" }
+      ],
+      "onlineHosts": []
     },
     {
       "id": "yusuf-adebakin-wed",
@@ -208,7 +245,6 @@
       "type": "in-person",
       "location": "BHEE 208"
     },
-
     {
       "id": "zelin-li-thu-morning",
       "ta": "Zelin Li",
@@ -237,23 +273,25 @@
       "location": "POTR 212"
     },
     {
-      "id": "group-oh-thu-in-person",
-      "ta": "Group OH",
+      "id": "group-oh-thu",
+      "ta": "Group Office Hours",
       "day": "Thursday",
       "start": "13:30",
       "end": "16:00",
-      "type": "in-person",
-      "location": "BRNG B212"
-    },
-    {
-      "id": "group-oh-thu-online",
-      "ta": "Group OH",
-      "day": "Thursday",
-      "start": "13:30",
-      "end": "16:00",
-      "type": "online",
-      "location": "Zoom",
-      "link": "https://purdue.zoom.us/j/REPLACE_ME"
+      "location": "BRNG B212",
+      "inPersonHosts": [
+        { "ta": "Marie" },
+        { "ta": "Parker" },
+        { "ta": "Zelin Li" },
+        { "ta": "Preston Mo" }
+      ],
+      "onlineHosts": [
+        {
+          "ta": "Mohamed Aboelyazed",
+          "platform": "zoom",
+          "link": "https://purdue.zoom.us/j/REPLACE_ME"
+        }
+      ]
     },
     {
       "id": "preston-mo-thu",
@@ -264,25 +302,19 @@
       "type": "in-person",
       "location": "BHEE 208"
     },
-
     {
-      "id": "group-oh-fri-in-person",
-      "ta": "Group OH",
+      "id": "group-oh-fri",
+      "ta": "Group Office Hours",
       "day": "Friday",
       "start": "10:30",
       "end": "12:00",
-      "type": "in-person",
-      "location": "HAMP 2102"
-    },
-    {
-      "id": "group-oh-fri-online",
-      "ta": "Group OH",
-      "day": "Friday",
-      "start": "10:30",
-      "end": "12:00",
-      "type": "online",
-      "location": "Zoom",
-      "link": "https://purdue.zoom.us/j/REPLACE_ME"
+      "location": "HAMP 2102",
+      "inPersonHosts": [
+        { "ta": "Zelin Li" },
+        { "ta": "Steven Yan" },
+        { "ta": "Marie" }
+      ],
+      "onlineHosts": []
     },
     {
       "id": "zelin-li-fri",
